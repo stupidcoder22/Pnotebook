@@ -1,9 +1,15 @@
-import React from 'react'
-
+import React, { useContext, useEffect } from "react";
+import NoteContext from "../Context/Notes/NoteContext";
 const About = () => {
-  return (
-    <div>About</div>
-  )
-}
+  const a = useContext(NoteContext);
 
-export default About
+  useEffect(() => {}, []);
+
+  return (
+    <div>
+      <p>this is about page</p>
+    </div>
+  );
+};
+
+export default About;
