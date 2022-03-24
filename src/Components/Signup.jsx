@@ -1,6 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ({ showAlert }) => {
+  const [userdata, setuserdata] = useState({
+    name: "",
+    email: "",
+    password: "",
+    repassword: "",
+  });
+  let navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { name, email, password } = userdata;
+
+    const response = await fetch("http://localhost:1000/api/auth/createuser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    });
+    const json = await response.json();
+    if (json.success) {
+      //redirect to home page
+      localStorage.setItem("token", json.authtoken);
+      navigate("/");
+      showAlert("Successfully Created Your Account", "success");
+    } else {
+      showAlert("Invalid Details", "danger");
+    }
+  };
+
+  const onChange = (e) => {
+    setuserdata({ ...userdata, [e.target.name]: e.target.value });
+  };
+
   return (
     <section className="vh-80 p-5">
       <div className="container h-100">
@@ -14,13 +52,16 @@ const Signup = () => {
                       Sign up
                     </p>
 
-                    <form className="mx-1 mx-md-4">
+                    <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
                           <input
                             type="text"
-                            id="form3Example1c"
+                            id="name"
+                            name="name"
+                            onChange={onChange}
+                            value={userdata.name}
                             className="form-control"
                           />
                           <label
@@ -37,8 +78,11 @@ const Signup = () => {
                         <div className="form-outline flex-fill mb-0">
                           <input
                             type="email"
-                            id="form3Example3c"
+                            name="email"
+                            id="email"
                             className="form-control"
+                            onChange={onChange}
+                            value={userdata.email}
                           />
                           <label
                             className="form-label"
@@ -54,8 +98,13 @@ const Signup = () => {
                         <div className="form-outline flex-fill mb-0">
                           <input
                             type="password"
-                            id="form3Example4c"
+                            id="password"
+                            name="password"
                             className="form-control"
+                            onChange={onChange}
+                            value={userdata.password}
+                            minLength={5}
+                            required
                           />
                           <label
                             className="form-label"
@@ -71,8 +120,13 @@ const Signup = () => {
                         <div className="form-outline flex-fill mb-0">
                           <input
                             type="password"
-                            id="form3Example4cd"
+                            name="repassword"
+                            id="repassword"
                             className="form-control"
+                            onChange={onChange}
+                            value={userdata.repassword}
+                            minLength={5}
+                            required
                           />
                           <label
                             className="form-label"
@@ -85,7 +139,7 @@ const Signup = () => {
 
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <button
-                          type="button"
+                          type="submit"
                           className="btn btn-success btn-lg"
                         >
                           Register

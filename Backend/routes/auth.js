@@ -16,15 +16,16 @@ router.post(
     body("password", "Enter a valid password").isLength({ min: 5 }),
   ],
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ success, errors: errors.array() });
     }
     //check whether user email already exist or not
     try {
       let user = await User.findOne({ email: req.body.email });
       if (user) {
-        return res.status(400).json({ errors: "Email already exist" });
+        return res.status(400).json({ success, errors: "Email already exist" });
       }
       const salt = await bcrypt.genSalt(10);
       let secpass = await bcrypt.hash(req.body.password, salt);
@@ -40,7 +41,8 @@ router.post(
         },
       };
       const authtoken = jwt.sign(data, jwtsecret);
-      res.send({ authtoken });
+      success = true;
+      res.send({ success, authtoken });
     } catch (error) {
       console.log(error);
       res.status(500).send("some error occured");
@@ -66,9 +68,10 @@ router.post(
       let user = await User.findOne({ email });
       if (!user) {
         success = false;
-        return res
-          .status(400)
-          .json({ error: "Please try to login with correct credential" });
+        return res.status(400).json({
+          success,
+          error: "Please try to login with correct credential",
+        });
       }
       const passcompare = await bcrypt.compare(password, user.password);
       if (!passcompare) {
