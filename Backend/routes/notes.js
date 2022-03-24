@@ -17,7 +17,7 @@ router.get("/fetchallnotes", fetchuser, async (req, res) => {
 });
 
 //Route 2:Add a new notes using: Post "/api/addnote". login required
-router.get(
+router.post(
   "/addnote",
   fetchuser,
   [
