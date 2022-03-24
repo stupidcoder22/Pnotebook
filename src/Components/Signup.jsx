@@ -95,7 +95,7 @@ const Signup = () => {
                   </div>
                   <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
                     <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                      src="https://img.freepik.com/free-vector/businessman-holding-pencil-big-complete-checklist-with-tick-marks_1150-35019.jpg?t=st=1648111672~exp=1648112272~hmac=c1fddece85731c6f53bdf588f64f8e1f323f40a7360ec3304d2a040d8b6f33e2&w=996"
                       className="img-fluid"
                       alt="Sample image"
                     />

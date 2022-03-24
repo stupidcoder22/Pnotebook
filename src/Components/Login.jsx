@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const [credential, setcredential] = useState({
+    email: "",
+    password: "",
+  });
+
+  let navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:1000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: credential.email,
+        password: credential.password,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (json.success) {
+      //redirect to home page
+      localStorage.setItem("token", json.authtoken);
+      navigate("/");
+    } else {
+      alert("wrong data");
+    }
+  };
+
+  const onChange = (e) => {
+    setcredential({ ...credential, [e.target.name]: e.target.value });
+  };
   return (
-    <section className="vh-100 p-5">
+    <section className="vh-100">
       <div className="container h-100">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-lg-12 col-xl-11">
@@ -14,14 +49,17 @@ const Login = () => {
                       Login
                     </p>
 
-                    <form className="mx-1 mx-md-4">
+                    <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
                       <div className="d-flex flex-row align-items-center mb-4">
                         <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
                           <input
+                            name="email"
                             type="email"
-                            id="form3Example3c"
+                            id="email"
                             className="form-control"
+                            value={credential.email}
+                            onChange={onChange}
                           />
                           <label
                             className="form-label"
@@ -36,8 +74,11 @@ const Login = () => {
                         <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
                           <input
+                            value={credential.password}
+                            name="password"
                             type="password"
-                            id="form3Example4c"
+                            id="passwords"
+                            onChange={onChange}
                             className="form-control"
                           />
                           <label
@@ -51,7 +92,7 @@ const Login = () => {
 
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                         <button
-                          type="button"
+                          type="submit"
                           className="btn btn-success btn-lg"
                         >
                           Login
