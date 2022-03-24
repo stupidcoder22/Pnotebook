@@ -34,14 +34,11 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag }),
     });
     const json = await response.json();
-    // console.log(json);
-    // console.log(title, description);
     setnotes(notes.concat(json));
   };
 
   //edit a note
   const editnote = async (id, title, description, tag) => {
-    console.log(id);
     //API call
     const response = await fetch(`${host}/api/notes/noteupdate/${id}`, {
       method: "PUT",
@@ -80,7 +77,6 @@ const NoteState = (props) => {
       },
     });
     const json = await response.json();
-    console.log(json);
 
     const newnotes = notes.filter((data) => data._id !== id);
     setnotes(newnotes);

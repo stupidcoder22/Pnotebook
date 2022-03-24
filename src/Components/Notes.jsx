@@ -22,7 +22,6 @@ const Notes = () => {
   }, []);
 
   const updatenote = (currentnote) => {
-    console.log(currentnote);
     ref.current.click();
     setnote({
       eid: currentnote._id,
@@ -30,7 +29,6 @@ const Notes = () => {
       edescription: currentnote.description,
       etag: currentnote.tag,
     });
-    console.log(note);
   };
 
   const handleClick = (e) => {
@@ -85,10 +83,12 @@ const Notes = () => {
                     type="text"
                     value={note.etitle}
                     className="form-control"
+                    minLength={5}
                     name="etitle"
                     id="etitle"
                     aria-describedby="emailHelp"
                     onChange={onChange}
+                    required
                   />
                 </div>
                 <div className="mb-3">
@@ -96,12 +96,14 @@ const Notes = () => {
                     Description
                   </label>
                   <input
+                    minLength={5}
                     name="edescription"
                     type="text"
                     value={note.edescription}
                     className="form-control"
                     id="edescription"
                     onChange={onChange}
+                    required
                   />
                 </div>
 
@@ -132,6 +134,9 @@ const Notes = () => {
               <button
                 type="button"
                 className="btn btn-primary"
+                disabled={
+                  note.etitle.length < 5 || note.edescription.length < 5
+                }
                 onClick={handleClick}
               >
                 Update Note
@@ -142,6 +147,9 @@ const Notes = () => {
       </div>
       <div className="row">
         <h2>Your Notes</h2>
+        <div className="container mx-2">
+          {notes.length === 0 && "No notes here"}
+        </div>
         {notes.map((data) => {
           return (
             <Noteitem key={data._id} updatenote={updatenote} note={data} />
