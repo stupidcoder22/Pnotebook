@@ -31,11 +31,6 @@ const Navbar = () => {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link " to="/about">
-                About
-              </NavLink>
-            </li>
           </ul>
           {!localStorage.getItem("token") ? (
             <form className="d-flex">

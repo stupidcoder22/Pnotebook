@@ -24,8 +24,6 @@ const Notes = ({ showAlert }) => {
     } else {
       navigate("/login");
     }
-    // getNotes();
-    // eslint-disable-next-line
   }, []);
 
   const updatenote = (currentnote) => {
