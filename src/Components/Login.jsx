@@ -23,12 +23,10 @@ const Login = ({ showAlert }) => {
     });
 
     const json = await response.json();
-    console.log(json.authtoken);
     if (json.success) {
       //redirect to home page
       localStorage.setItem("token", json.authtoken);
       showAlert("Logged in Successfully", "success");
-      console.log("/");
       navigate("/");
     } else {
       showAlert("Invalid Credential", "danger");
